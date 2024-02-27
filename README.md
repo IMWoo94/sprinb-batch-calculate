@@ -11,6 +11,8 @@
 - Spring
 - SpringBoot 3.x
 - Spring Batch
+- Spring Data JPA
+- H2 Database
 - IntelliJ
 
 ---
