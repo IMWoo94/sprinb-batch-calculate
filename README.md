@@ -8,8 +8,8 @@
 ---
 ### 개발 환경
 - Java17
-- Spring
-- SpringBoot 3.x
+- Spring6.1.4
+- SpringBoot 3.2.3
 - Spring Batch
 - Spring Data JPA
 - H2 Database
