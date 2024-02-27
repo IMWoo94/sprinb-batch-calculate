@@ -16,8 +16,9 @@
 - IntelliJ
 
 ---
-### 원시적으로 배치 프로그램 구현하기
-
+### 원시적으로 배치 프로그램 구현하기 #2
+- 365일이 지나도록 로그인 하지 않으면 휴면 계정으로 전환
+  <img width="450" alt="image" src="https://github.com/IMWoo94/spring-batch-calculate/assets/75981576/aca84b25-aff8-4f16-a891-5114ce996ea0">
 ---
 ### Spring Batch 배치 프로그램 구현하기
 
