@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.lsm.batch.customer.Customer;
 import com.lsm.batch.customer.CustomerRepository;
 import com.lsm.batch.dormantbatch.BatchStatus;
+import com.lsm.batch.dormantbatch.Job;
 import com.lsm.batch.dormantbatch.JobExecution;
 
 @SpringBootTest
@@ -22,7 +23,7 @@ class DormantBatchJobTest {
 	private CustomerRepository customerRepository;
 
 	@Autowired
-	private DormantBatchJob dormantBatchJob;
+	private Job dormantBatchJob;
 
 	@BeforeEach
 	public void setup() {
@@ -112,7 +113,7 @@ class DormantBatchJobTest {
 	void test4() {
 
 		// given
-		final DormantBatchJob dormantBatchJob = new DormantBatchJob(null);
+		final Job dormantBatchJob = new Job(null);
 
 		// when
 		final JobExecution result = dormantBatchJob.execute();

@@ -1,18 +1,32 @@
 package com.lsm.batch.dormantbatch;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Job {
 
 	private final Tasklet tasklet;
 	private final JobExecutionListener jobExecutionListener;
 
+	public Job(Tasklet tasklet) {
+		this(tasklet, null);
+	}
+
 	public Job(Tasklet tasklet, JobExecutionListener jobExecutionListener) {
 		this.tasklet = tasklet;
-		this.jobExecutionListener = jobExecutionListener;
+		this.jobExecutionListener = Objects.requireNonNullElseGet(jobExecutionListener,
+			() -> new JobExecutionListener() {
+				@Override
+				public void beforeJob(JobExecution jobExecution) {
+
+				}
+
+				@Override
+				public void afterJob(JobExecution jobExecution) {
+
+				}
+			});
+
 	}
 
 	public JobExecution execute() {
