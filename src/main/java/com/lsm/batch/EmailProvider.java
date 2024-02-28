@@ -1,4 +1,4 @@
-package com.lsm.batch.customer;
+package com.lsm.batch;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,7 +8,7 @@ public interface EmailProvider {
 	void send(String emailAddress, String title, String body);
 
 	@Slf4j
-	class Fake implements EmailProvider{
+	class Fake implements EmailProvider {
 
 		@Override
 		public void send(String emailAddress, String title, String body) {

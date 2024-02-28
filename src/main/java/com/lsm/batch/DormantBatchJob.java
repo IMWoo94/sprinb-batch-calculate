@@ -1,4 +1,4 @@
-package com.lsm.batch.customer;
+package com.lsm.batch;
 
 import java.time.LocalDate;
 
@@ -6,6 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+
+import com.lsm.batch.customer.Customer;
+import com.lsm.batch.customer.CustomerRepository;
 
 @Component
 public class DormantBatchJob {
