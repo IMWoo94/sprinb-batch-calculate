@@ -15,6 +15,7 @@ import com.lsm.batch.customer.CustomerRepository;
 import com.lsm.batch.dormantbatch.BatchStatus;
 import com.lsm.batch.dormantbatch.Job;
 import com.lsm.batch.dormantbatch.JobExecution;
+import com.lsm.batch.dormantbatch.TaskletJob;
 
 @SpringBootTest
 class DormantBatchJobTest {
@@ -113,7 +114,7 @@ class DormantBatchJobTest {
 	void test4() {
 
 		// given
-		final Job dormantBatchJob = new Job(null);
+		final Job dormantBatchJob = new TaskletJob(null);
 
 		// when
 		final JobExecution result = dormantBatchJob.execute();
