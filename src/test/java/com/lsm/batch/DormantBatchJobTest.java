@@ -1,4 +1,4 @@
-package com.lsm.batch.customer;
+package com.lsm.batch;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -10,7 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.lsm.batch.DormantBatchJob;
+import com.lsm.batch.customer.Customer;
+import com.lsm.batch.customer.CustomerRepository;
+import com.lsm.batch.dormantbatch.BatchStatus;
+import com.lsm.batch.dormantbatch.JobExecution;
 
 @SpringBootTest
 class DormantBatchJobTest {
@@ -42,7 +45,7 @@ class DormantBatchJobTest {
 
 		// when
 		// 배치 동작 [ 휴면 계정 전환 ]
-		dormantBatchJob.execute();
+		JobExecution result = dormantBatchJob.execute();
 
 		// then
 		final long dormantCount = customerRepository.findAll()
@@ -51,6 +54,7 @@ class DormantBatchJobTest {
 			.count();
 
 		Assertions.assertThat(dormantCount).isEqualTo(3);
+		Assertions.assertThat(result.getStatus()).isEqualTo(BatchStatus.COMPLETED);
 	}
 
 	@Test
@@ -70,7 +74,7 @@ class DormantBatchJobTest {
 
 		// when
 		// 배치 동작 [ 휴면 계정 전환 ]
-		dormantBatchJob.execute();
+		JobExecution result = dormantBatchJob.execute();
 
 		// then
 		final long dormantCount = customerRepository.findAll()
@@ -79,18 +83,19 @@ class DormantBatchJobTest {
 			.count();
 
 		Assertions.assertThat(dormantCount).isEqualTo(10);
+		Assertions.assertThat(result.getStatus()).isEqualTo(BatchStatus.COMPLETED);
 	}
 
 	@Test
 	@DisplayName("고객이 없는 경우도 배치는 정상 동작 해야 한다.")
-	void test() {
+	void test3() {
 		// null, size 0 등 예외 적인 상황을 방지
 
 		// given
 
 		// when
 		// 배치 동작 [ 휴면 계정 전환 ]
-		dormantBatchJob.execute();
+		JobExecution result = dormantBatchJob.execute();
 
 		// then
 		final long dormantCount = customerRepository.findAll()
@@ -99,6 +104,21 @@ class DormantBatchJobTest {
 			.count();
 
 		Assertions.assertThat(dormantCount).isEqualTo(0);
+		Assertions.assertThat(result.getStatus()).isEqualTo(BatchStatus.COMPLETED);
+	}
+
+	@Test
+	@DisplayName("배치가 실패하면 BatchStatus 는 FAILED 를 반환해야 한다.")
+	void test4() {
+
+		// given
+		final DormantBatchJob dormantBatchJob = new DormantBatchJob(null);
+
+		// when
+		final JobExecution result = dormantBatchJob.execute();
+
+		// then
+		Assertions.assertThat(result.getStatus()).isEqualTo(BatchStatus.FAILED);
 	}
 
 	private void saveCustomer(long loginMinusDays) {
