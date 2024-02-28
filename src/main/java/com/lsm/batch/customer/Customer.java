@@ -40,6 +40,10 @@ public class Customer {
 		this.loginAt = loginAt;
 	}
 
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	public enum Status {
 		NORMAL,
 		DORMANT;
