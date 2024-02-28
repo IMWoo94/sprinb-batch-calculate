@@ -2,12 +2,11 @@ package com.lsm.batch.customer;
 
 import java.time.LocalDateTime;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ import lombok.ToString;
 public class Customer {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private String email;
@@ -37,7 +36,11 @@ public class Customer {
 		this.status = Status.NORMAL;
 	}
 
-	public enum Status{
+	public void setLoginAt(LocalDateTime loginAt) {
+		this.loginAt = loginAt;
+	}
+
+	public enum Status {
 		NORMAL,
 		DORMANT;
 	}
