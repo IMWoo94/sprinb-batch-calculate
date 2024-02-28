@@ -3,6 +3,8 @@ package com.lsm.batch.dormantbatch;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import lombok.Builder;
+
 public class Job {
 
 	private final Tasklet tasklet;
@@ -10,6 +12,16 @@ public class Job {
 
 	public Job(Tasklet tasklet) {
 		this(tasklet, null);
+	}
+
+	@Builder
+	public Job(
+		ItemReader<?> itemReader,
+		ItemProcessor<?, ?> itemProcessor,
+		ItemWriter<?> itemWriter,
+		JobExecutionListener jobExecutionListener
+	) {
+		this(new SimpleTasklet(itemReader, itemProcessor, itemWriter), jobExecutionListener);
 	}
 
 	public Job(Tasklet tasklet, JobExecutionListener jobExecutionListener) {

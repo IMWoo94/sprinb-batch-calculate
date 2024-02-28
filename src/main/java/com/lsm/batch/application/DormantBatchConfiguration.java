@@ -3,9 +3,7 @@ package com.lsm.batch.application;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.lsm.batch.customer.Customer;
 import com.lsm.batch.dormantbatch.Job;
-import com.lsm.batch.dormantbatch.SimpleTasklet;
 
 @Configuration
 public class DormantBatchConfiguration {
@@ -17,12 +15,12 @@ public class DormantBatchConfiguration {
 		DormantBatchItemWriter dormantBatchItemWriter,
 		DormantBatchJobExecutionListener dormantBatchJobExecutionListener
 	) {
-		SimpleTasklet<Customer, Customer> tasklet = new SimpleTasklet<>(dormantBatchItemReader,
-			dormantBatchItemProcessor, dormantBatchItemWriter);
-		
-		return new Job(
-			tasklet,
-			dormantBatchJobExecutionListener
-		);
+
+		return Job.builder()
+			.itemReader(dormantBatchItemReader)
+			.itemProcessor(dormantBatchItemProcessor)
+			.itemWriter(dormantBatchItemWriter)
+			.jobExecutionListener(dormantBatchJobExecutionListener)
+			.build();
 	}
 }
