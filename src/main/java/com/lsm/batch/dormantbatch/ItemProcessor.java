@@ -1,4 +1,4 @@
-package com.lsm.batch.application;
+package com.lsm.batch.dormantbatch;
 
 public interface ItemProcessor<I, O> {
 
