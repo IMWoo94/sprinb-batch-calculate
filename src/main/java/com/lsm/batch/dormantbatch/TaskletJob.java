@@ -1,17 +1,14 @@
 package com.lsm.batch.dormantbatch;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import lombok.Builder;
 
-public class TaskletJob implements Job {
+public class TaskletJob extends AbstractJob {
 
 	private final Tasklet tasklet;
-	private final JobExecutionListener jobExecutionListener;
 
 	public TaskletJob(Tasklet tasklet) {
-		this(tasklet, null);
+		super(null);
+		this.tasklet = tasklet;
 	}
 
 	@Builder
@@ -21,46 +18,12 @@ public class TaskletJob implements Job {
 		ItemWriter<?> itemWriter,
 		JobExecutionListener jobExecutionListener
 	) {
-		this(new SimpleTasklet(itemReader, itemProcessor, itemWriter), jobExecutionListener);
-	}
-
-	public TaskletJob(Tasklet tasklet, JobExecutionListener jobExecutionListener) {
-		this.tasklet = tasklet;
-		this.jobExecutionListener = Objects.requireNonNullElseGet(jobExecutionListener,
-			() -> new JobExecutionListener() {
-				@Override
-				public void beforeJob(JobExecution jobExecution) {
-
-				}
-
-				@Override
-				public void afterJob(JobExecution jobExecution) {
-
-				}
-			});
-
+		super(jobExecutionListener);
+		this.tasklet = new SimpleTasklet(itemReader, itemProcessor, itemWriter);
 	}
 
 	@Override
-	public JobExecution execute() {
-
-		JobExecution jobExecution = new JobExecution();
-		jobExecution.setStatus(BatchStatus.STARTING);
-		jobExecution.setStartTime(LocalDateTime.now());
-
-		jobExecutionListener.beforeJob(jobExecution);
-
-		try {
-			tasklet.execute();
-			jobExecution.setStatus(BatchStatus.COMPLETED);
-		} catch (Exception e) {
-			jobExecution.setStatus(BatchStatus.FAILED);
-		}
-
-		jobExecution.setEndTime(LocalDateTime.now());
-
-		jobExecutionListener.afterJob(jobExecution);
-		return jobExecution;
-
+	public void doExecute() {
+		tasklet.execute();
 	}
 }
