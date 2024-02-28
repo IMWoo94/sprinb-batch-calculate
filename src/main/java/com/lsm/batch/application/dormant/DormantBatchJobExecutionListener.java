@@ -1,4 +1,4 @@
-package com.lsm.batch.application;
+package com.lsm.batch.application.dormant;
 
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.lsm.batch.application;
+package com.lsm.batch.application.dormant;
 
 import java.time.LocalDate;
 

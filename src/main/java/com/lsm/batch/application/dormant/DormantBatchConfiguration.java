@@ -1,9 +1,10 @@
-package com.lsm.batch.application;
+package com.lsm.batch.application.dormant;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.lsm.batch.dormantbatch.Job;
+import com.lsm.batch.dormantbatch.TaskletJob;
 
 @Configuration
 public class DormantBatchConfiguration {
@@ -16,7 +17,7 @@ public class DormantBatchConfiguration {
 		DormantBatchJobExecutionListener dormantBatchJobExecutionListener
 	) {
 
-		return Job.builder()
+		return TaskletJob.builder()
 			.itemReader(dormantBatchItemReader)
 			.itemProcessor(dormantBatchItemProcessor)
 			.itemWriter(dormantBatchItemWriter)
