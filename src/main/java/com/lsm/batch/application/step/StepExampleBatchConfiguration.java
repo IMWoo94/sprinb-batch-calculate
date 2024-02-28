@@ -1,15 +1,12 @@
 package com.lsm.batch.application.step;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.lsm.batch.dormantbatch.Job;
 import com.lsm.batch.dormantbatch.Step;
-import com.lsm.batch.dormantbatch.StepJob;
+import com.lsm.batch.dormantbatch.StepJobBuilder;
 
 @Configuration
 public class StepExampleBatchConfiguration {
@@ -23,8 +20,11 @@ public class StepExampleBatchConfiguration {
 		@Qualifier("step3")
 		Step step3
 	) {
-		List<Step> steps = Arrays.asList(step1, step2, step3);
-		return new StepJob(steps, null);
+		return new StepJobBuilder()
+			.start(step1)
+			.next(step2)
+			.next(step3)
+			.build();
 	}
 
 	@Bean(name = "step1")
