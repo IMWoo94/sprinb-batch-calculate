@@ -25,7 +25,7 @@ public class DormantBatchConfiguration {
 
 	@Bean
 	public Step dormantBatchStep(
-		DormantBatchItemReader itemReader,
+		AllCustomerItemReader itemReader,
 		DormantBatchItemProcessor itemProcessor,
 		DormantBatchItemWriter itemWriter
 	) {
@@ -38,7 +38,7 @@ public class DormantBatchConfiguration {
 
 	@Bean
 	public Step preDormantBatchStep(
-		PreDormantBatchItemReader itemReader,
+		AllCustomerItemReader itemReader,
 		PreDormantBatchItemProcessor itemProcessor,
 		PreDormantBatchItemWriter itemWriter
 	) {
@@ -48,4 +48,5 @@ public class DormantBatchConfiguration {
 			.itemWriter(itemWriter)
 			.build();
 	}
+
 }

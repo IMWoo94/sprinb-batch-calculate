@@ -10,12 +10,12 @@ import com.lsm.batch.customer.CustomerRepository;
 import com.lsm.batch.dormantbatch.ItemReader;
 
 @Component
-public class DormantBatchItemReader implements ItemReader<Customer> {
+public class AllCustomerItemReader implements ItemReader<Customer> {
 
 	private int pageNo = 0;
 	private final CustomerRepository customerRepository;
 
-	public DormantBatchItemReader(CustomerRepository customerRepository) {
+	public AllCustomerItemReader(CustomerRepository customerRepository) {
 		this.customerRepository = customerRepository;
 	}
 
