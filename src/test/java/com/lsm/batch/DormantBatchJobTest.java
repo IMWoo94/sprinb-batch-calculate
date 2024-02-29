@@ -123,6 +123,23 @@ class DormantBatchJobTest {
 		Assertions.assertThat(result.getStatus()).isEqualTo(BatchStatus.FAILED);
 	}
 
+	@Test
+	@DisplayName("358일 전에 로그인한 고객에게 휴면계정 예정자라고 메일을 발송해야 한다.")
+	void test5() {
+
+		// given
+		saveCustomer(358);
+		saveCustomer(358);
+		saveCustomer(358);
+		saveCustomer(35);
+		saveCustomer(35);
+
+		// when
+
+		// then
+		dormantBatchJob.execute();
+	}
+
 	private void saveCustomer(long loginMinusDays) {
 		final String uuid = UUID.randomUUID().toString();
 		final Customer user = new Customer(uuid, uuid + "@test.com");
