@@ -25,7 +25,7 @@ class PreDormantBatchItemProcessorTest {
 		// given
 		Customer customer = new Customer("lee", "lee@test.com");
 
-		customer.setLoginAt(LocalDateTime.now().minusDays(358));
+		customer.setLoginAt(LocalDateTime.now().minusDays(365).plusDays(7));
 
 		// when
 		Customer result = preDormantBatchItemProcessor.process(customer);
