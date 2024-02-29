@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  db:
+    image: mysql:8.3.0
+    restart: always
+    command:
+      - --lower_case_table_names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+
+    container_name: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=spring_batch
+      - MYSQL_ROOT_PASSWORD=1234
+      - TZ=Asia/Seoul
+    volumes:
+      - ./data/:/var/lib/mysql
