@@ -5,8 +5,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.core.step.skip.SkipLimitExceededException;
-import org.springframework.batch.core.step.skip.SkipPolicy;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
@@ -48,29 +47,30 @@ public class JobConfiguration {
 					return null;
 				}
 
-				if (count >= 15) {
-					throw new IllegalStateException("예외 발생" + count);
-				}
-
 				return count;
 			}
 		};
 
-		SkipPolicy skipPolicy = new SkipPolicy() {
+		ItemProcessor<Integer, Integer> itemProcessor = new ItemProcessor<>() {
 			@Override
-			public boolean shouldSkip(Throwable t, long skipCount) throws SkipLimitExceededException {
-				return t instanceof IllegalStateException && skipCount < 5;
+			public Integer process(Integer item) throws Exception {
+
+				if (item == 15) {
+					throw new IllegalStateException(item.toString());
+				}
+				return item;
 			}
 		};
 
 		return new StepBuilder("step", jobRepository)
-			.chunk(10, platformTransactionManager)
+			.<Integer, Integer>chunk(10, platformTransactionManager)
 			.reader(itemReader)
-			// .processor()
+			.processor(itemProcessor)
 			.writer(read -> {
 			})
 			.faultTolerant()
-			.noRollback(IllegalStateException.class)
+			.retry(IllegalStateException.class)
+			.retryLimit(3)
 			.build();
 	}
 }
