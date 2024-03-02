@@ -6,7 +6,7 @@ spring:
     jdbc:
       initialize-schema: always # schema 항상 초기화
     job:
-      name: itemWriterJob
+      name: itemProcessorJob
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3307/spring_batch
