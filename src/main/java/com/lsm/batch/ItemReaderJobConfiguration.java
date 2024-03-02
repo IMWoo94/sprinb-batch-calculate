@@ -7,6 +7,7 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
@@ -39,11 +40,11 @@ public class ItemReaderJobConfiguration {
 	public Step itemReaderstep(
 		JobRepository jobRepository,
 		PlatformTransactionManager platformTransactionManager,
-		ItemReader<User> jpaPagingItemReader
+		ItemReader<User> jpaCursorItemReader
 	) {
 		return new StepBuilder("step", jobRepository)
 			.<User, User>chunk(2, platformTransactionManager)
-			.reader(jpaPagingItemReader)
+			.reader(jpaCursorItemReader)
 			.writer(System.out::println)
 			.build();
 	}
@@ -92,6 +93,17 @@ public class ItemReaderJobConfiguration {
 			.name("jpaPagingItemReader")
 			.entityManagerFactory(entityManagerFactory)
 			.pageSize(3)
+			.queryString("select u from User u order by u.id")
+			.build();
+	}
+
+	@Bean
+	public ItemReader<User> jpaCursorItemReader(
+		EntityManagerFactory entityManagerFactory
+	) {
+		return new JpaCursorItemReaderBuilder<User>()
+			.name("jpaCursorItemReader")
+			.entityManagerFactory(entityManagerFactory)
 			.queryString("select u from User u order by u.id")
 			.build();
 	}
