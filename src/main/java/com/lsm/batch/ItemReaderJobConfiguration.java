@@ -7,6 +7,7 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.transform.Range;
@@ -17,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 public class ItemReaderJobConfiguration {
@@ -36,11 +39,11 @@ public class ItemReaderJobConfiguration {
 	public Step itemReaderstep(
 		JobRepository jobRepository,
 		PlatformTransactionManager platformTransactionManager,
-		ItemReader<User> jsonItemReader
+		ItemReader<User> jpaPagingItemReader
 	) {
 		return new StepBuilder("step", jobRepository)
 			.<User, User>chunk(2, platformTransactionManager)
-			.reader(jsonItemReader)
+			.reader(jpaPagingItemReader)
 			.writer(System.out::println)
 			.build();
 	}
@@ -78,6 +81,18 @@ public class ItemReaderJobConfiguration {
 			.name("jsonItemReader")
 			.resource(new ClassPathResource("users.json"))
 			.jsonObjectReader(new JacksonJsonObjectReader<>(User.class))
+			.build();
+	}
+
+	@Bean
+	public ItemReader<User> jpaPagingItemReader(
+		EntityManagerFactory entityManagerFactory
+	) {
+		return new JpaPagingItemReaderBuilder<User>()
+			.name("jpaPagingItemReader")
+			.entityManagerFactory(entityManagerFactory)
+			.pageSize(3)
+			.queryString("select u from User u order by u.id")
 			.build();
 	}
 }
