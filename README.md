@@ -4,7 +4,9 @@
 ## 개요
 
 - [배치 프로그램이란 무엇인가?](https://imwoo94.notion.site/Spring-Batch-f4d2dfe1397e4e9a8e54664aa52d2a06?pvs=4)
-- 배치 프로그램을 구현해보고, Spring 에서 제공하는 Spring Batch 를 이해
+- Spring Batch
+    - [Spring Batch 알아보기](https://github.com/IMWoo94/spring-batch-calculate/issues/9)
+    - [Spring 성능 개선](https://github.com/IMWoo94/spring-batch-calculate/issues/12)
 - Spring Batch 를 사용한 정산 시스템을 구현
 
 ---
