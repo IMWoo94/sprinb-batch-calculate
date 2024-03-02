@@ -8,6 +8,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
 import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
@@ -38,12 +40,12 @@ public class ItemWriterJobConfiguration {
 		JobRepository jobRepository,
 		PlatformTransactionManager platformTransactionManager,
 		ItemReader<User> flatFileItemReader,
-		ItemWriter<User> JsonItemWriter
+		ItemWriter<User> jpaItemWriter
 	) {
 		return new StepBuilder("step", jobRepository)
 			.<User, User>chunk(2, platformTransactionManager)
 			.reader(flatFileItemReader)
-			.writer(JsonItemWriter)
+			.writer(jpaItemWriter)
 			.build();
 	}
 
@@ -80,4 +82,14 @@ public class ItemWriterJobConfiguration {
 			.jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
 			.build();
 	}
+
+	@Bean
+	public ItemWriter<User> jpaItemWriter(
+		EntityManagerFactory entityManagerFactory
+	) {
+		return new JpaItemWriterBuilder<User>()
+			.entityManagerFactory(entityManagerFactory)
+			.build();
+	}
+
 }
