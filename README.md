@@ -28,7 +28,7 @@
 
 ---
 
-### Spring Batch 알아보기
+### [Spring Batch 알아보기](https://github.com/IMWoo94/spring-batch-calculate/issues/9)
 
 - Spring Batch 구조
     - Job, Step, JobRepository, ItemReader, ItemProcessor, ItemWriter
@@ -48,7 +48,7 @@
     - ItemProcessor
         - CustomItemProcessor
         - CompositeItemProcessor
-- Spring 성능 개선
+- [Spring 성능 개선](https://github.com/IMWoo94/spring-batch-calculate/issues/12)
     - Multi-threaded Step
     - Parallel Steps
     - Partitioning
