@@ -1,5 +1,7 @@
 package com.lsm.batch;
 
+import javax.sql.DataSource;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -8,6 +10,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
@@ -40,12 +43,12 @@ public class ItemWriterJobConfiguration {
 		JobRepository jobRepository,
 		PlatformTransactionManager platformTransactionManager,
 		ItemReader<User> flatFileItemReader,
-		ItemWriter<User> jpaItemWriter
+		ItemWriter<User> jdbcBatchItemWriter
 	) {
 		return new StepBuilder("step", jobRepository)
 			.<User, User>chunk(2, platformTransactionManager)
 			.reader(flatFileItemReader)
-			.writer(jpaItemWriter)
+			.writer(jdbcBatchItemWriter)
 			.build();
 	}
 
@@ -89,6 +92,20 @@ public class ItemWriterJobConfiguration {
 	) {
 		return new JpaItemWriterBuilder<User>()
 			.entityManagerFactory(entityManagerFactory)
+			.build();
+	}
+
+	@Bean
+	public ItemWriter<User> jdbcBatchItemWriter(DataSource source) {
+		return new JdbcBatchItemWriterBuilder<User>()
+			.dataSource(source)
+			.sql("""
+					INSERT INTO
+					user(name, age, region, telephone)
+					VALUES
+					(:name, :age, :region, :telephone)
+				""")
+			.beanMapped()
 			.build();
 	}
 
