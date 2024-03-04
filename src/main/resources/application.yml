@@ -1,7 +1,17 @@
-spring:
-  jpa:
-    show-sql: true
-
 logging:
   level:
-    root: debug
+    root: info
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always # schema 항상 초기화
+    job:
+      name: partitionJob
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/spring_batch
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: validate
