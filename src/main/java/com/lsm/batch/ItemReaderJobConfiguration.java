@@ -93,6 +93,7 @@ public class ItemReaderJobConfiguration {
 			.name("jpaPagingItemReader")
 			.entityManagerFactory(entityManagerFactory)
 			.pageSize(3)
+			.saveState(false)
 			.queryString("select u from User u order by u.id")
 			.build();
 	}
