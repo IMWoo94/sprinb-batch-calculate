@@ -38,3 +38,6 @@ out/
 
 ### MySQL Data ###
 /mysql/data
+
+### Create Datas ###
+src/main/resources/datas
