@@ -8,9 +8,6 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.listener.ExecutionContextPromotionListener;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,12 +31,10 @@ public class SettleDetailStepConfiguration {
 
 	@Bean
 	public Job preSettleDetailJob(
-		Step preSettleDetailStep,
-		Step contextShareStep
+		Step preSettleDetailStep
 	) {
 		return new JobBuilder("preSettleDetailJob", jobRepository)
 			.start(preSettleDetailStep)
-			.next(contextShareStep)
 			.incrementer(new RunIdIncrementer())
 			.build();
 	}
@@ -48,22 +43,6 @@ public class SettleDetailStepConfiguration {
 	// Key[ A, 1 ] 13 호출
 
 	// 두번째 Step : 집계된 Execution Context 데이터를 가지고 DB 에 Write 한다.
-
-	@Bean
-	public Step contextShareStep(
-		ItemReader<Key> testReader
-	) {
-		return new StepBuilder("contextShareStep", jobRepository)
-			.<Key, Key>chunk(5000, platformTransactionManager)
-			.reader(testReader)
-			.writer(new ItemWriter<Key>() {
-				@Override
-				public void write(Chunk<? extends Key> chunk) throws Exception {
-
-				}
-			})
-			.build();
-	}
 
 	@Bean
 	public Step preSettleDetailStep(
