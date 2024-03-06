@@ -1,5 +1,7 @@
 package com.lsm.batch.calculateBatch.domain;
 
+import java.util.Arrays;
+
 import lombok.Getter;
 
 @Getter
@@ -39,5 +41,12 @@ public enum ServicedPolicy {
 		this.id = id;
 		this.url = url;
 		this.fee = fee;
+	}
+
+	public static ServicedPolicy findByUrl(String url) {
+		return Arrays.stream(values())
+			.filter(it -> it.url.equals(url))
+			.findFirst()
+			.orElseThrow();
 	}
 }
