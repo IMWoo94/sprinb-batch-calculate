@@ -49,4 +49,11 @@ public enum ServicedPolicy {
 			.findFirst()
 			.orElseThrow();
 	}
+
+	public static ServicedPolicy findById(Long id) {
+		return Arrays.stream(values())
+			.filter(it -> it.id.equals(id))
+			.findFirst()
+			.orElseThrow();
+	}
 }

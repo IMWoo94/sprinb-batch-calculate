@@ -1,6 +1,6 @@
 package com.lsm.batch.calculateBatch.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,5 +21,13 @@ public class SettleDetail {
 	private Long serviceId;
 	private Long count;
 	private Long fee;
-	private LocalDateTime targetDate;
+	private LocalDate targetDate;
+
+	public SettleDetail(Long customerId, Long serviceId, Long count, Long fee, LocalDate targetDate) {
+		this.customerId = customerId;
+		this.serviceId = serviceId;
+		this.count = count;
+		this.fee = fee;
+		this.targetDate = targetDate;
+	}
 }
