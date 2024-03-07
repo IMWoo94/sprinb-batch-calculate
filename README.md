@@ -68,5 +68,6 @@
     - [일일 단위 정산 배치 구현](https://github.com/IMWoo94/spring-batch-calculate/issues/16)
     - [주 단위 정산 배치 구현](https://github.com/IMWoo94/spring-batch-calculate/issues/17)
 
-- 전체 동작 흐름
-- 
+- 전체 동작 흐름<br>
+  <img width="589" alt="image" src="https://github.com/IMWoo94/spring-batch-calculate/assets/75981576/3bfd2d40-5073-4722-b7e1-e6096acf1eb8">
+
