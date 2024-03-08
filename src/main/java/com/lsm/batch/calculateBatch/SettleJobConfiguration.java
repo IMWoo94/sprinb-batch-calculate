@@ -11,6 +11,7 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.job.flow.JobExecutionDecider;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,7 @@ public class SettleJobConfiguration {
 		Step settleGroupStep
 	) {
 		return new JobBuilder("settleJob", jobRepository)
+			.incrementer(new RunIdIncrementer())
 			.validator(new DateFormatJobParametersValidator(new String[] {"targetDate"}))
 			.start(preSettleDetailStep)
 			.next(settleDetailStep)
