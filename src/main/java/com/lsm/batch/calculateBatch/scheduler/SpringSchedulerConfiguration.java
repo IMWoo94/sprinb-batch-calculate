@@ -1,4 +1,4 @@
-package com.lsm.batch.calculateBatch.runner;
+package com.lsm.batch.calculateBatch.scheduler;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,11 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class JobRunnerConfiguration {
+@EnableScheduling
+public class SpringSchedulerConfiguration implements SchedulingConfigurer {
 
 	private final JobLauncher jobLauncher;
 	private final Job settleJob;
@@ -60,4 +65,13 @@ public class JobRunnerConfiguration {
 		log.info(">>>>>fixedRate2 종료 시간 {} , 총 소요 시간 : {}", end, total);
 	}
 
+	@Override
+	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+		ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+		threadPoolTaskScheduler.setPoolSize(5);
+		threadPoolTaskScheduler.setThreadNamePrefix("thread-");
+		threadPoolTaskScheduler.initialize();
+
+		taskRegistrar.setTaskScheduler(threadPoolTaskScheduler);
+	}
 }
