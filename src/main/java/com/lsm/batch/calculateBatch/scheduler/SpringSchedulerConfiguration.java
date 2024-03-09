@@ -28,10 +28,12 @@ public class SpringSchedulerConfiguration implements SchedulingConfigurer {
 
 	private final JobLauncher jobLauncher;
 	private final Job settleJob;
-	private int count;
+
+	// 매주 23시
+	private static final String CRON_EXPRESSION_EXAMPLE = "* * 23 * * *";
 
 	// 20 초 마다 정산 배치 프로세스
-	// @Scheduled(fixedDelay = 20000L)
+	@Scheduled(cron = CRON_EXPRESSION_EXAMPLE)
 	public void settleJobRun() throws
 		JobInstanceAlreadyCompleteException,
 		JobExecutionAlreadyRunningException,
@@ -45,7 +47,7 @@ public class SpringSchedulerConfiguration implements SchedulingConfigurer {
 		jobLauncher.run(settleJob, parameters);
 	}
 
-	@Scheduled(fixedRate = 3000)
+	// @Scheduled(fixedRate = 3000)
 	public void fixedRate1() throws InterruptedException {
 		LocalDateTime start = LocalDateTime.now();
 		log.info(">>>>>fixedRate1 시작 시간 {}", start);
@@ -55,7 +57,7 @@ public class SpringSchedulerConfiguration implements SchedulingConfigurer {
 		log.info(">>>>>fixedRate1 종료 시간 {} , 총 소요 시간 : {}", end, total);
 	}
 
-	@Scheduled(fixedRate = 3000)
+	// @Scheduled(fixedRate = 3000)
 	public void fixedRate2() throws InterruptedException {
 		LocalDateTime start = LocalDateTime.now();
 		log.info(">>>>>fixedRate2 시작 시간 {}", start);
