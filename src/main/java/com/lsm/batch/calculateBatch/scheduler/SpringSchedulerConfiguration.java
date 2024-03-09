@@ -10,9 +10,6 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
@@ -20,10 +17,10 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Configuration
+// @Configuration
 @RequiredArgsConstructor
 @Slf4j
-@EnableScheduling
+// @EnableScheduling
 public class SpringSchedulerConfiguration implements SchedulingConfigurer {
 
 	private final JobLauncher jobLauncher;
@@ -33,7 +30,8 @@ public class SpringSchedulerConfiguration implements SchedulingConfigurer {
 	private static final String CRON_EXPRESSION_EXAMPLE = "* * 23 * * *";
 
 	// 20 초 마다 정산 배치 프로세스
-	@Scheduled(cron = CRON_EXPRESSION_EXAMPLE)
+	// @Scheduled(cron = CRON_EXPRESSION_EXAMPLE)
+	// @Scheduled(fixedRate = 20000L)
 	public void settleJobRun() throws
 		JobInstanceAlreadyCompleteException,
 		JobExecutionAlreadyRunningException,
