@@ -9,21 +9,25 @@ import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.quartz.listeners.JobChainingJobListener;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class SettleQuartzRunner extends QuartzJobRunner {
 
 	private final Scheduler scheduler;
 
 	@Override
 	protected void doRun(ApplicationArguments args) {
+		log.info("SettleQuartzRunner doRun");
 		Map<String, String> params = new HashMap<>();
+		params.put("targetDate", "20240225");
+		params.put("totalCount", "500000");
 
 		JobDataMap jobDataMap = new JobDataMap();
 		jobDataMap.putAll(params);
@@ -36,10 +40,10 @@ public class SettleQuartzRunner extends QuartzJobRunner {
 		JobDetail settleJob = JobBuilder.newJob(SettleQuartzJob.class)
 			.storeDurably(true)
 			.withIdentity("settleQuartzJob", "settleBatch")
-			.usingJobData(jobDataMap)
+			.setJobData(apiOrderGeneratorJob.getJobDataMap())
 			.build();
 
-		JobChainingJobListener chainListener = new JobChainingJobListener("ChainListener");
+		CustomJobChainingJobListener chainListener = new CustomJobChainingJobListener("ChainListener");
 		chainListener.addJobChainLink(apiOrderGeneratorJob.getKey(), settleJob.getKey());
 
 		Trigger trigger = buildJobCronTrigger("30 * * * * ?");

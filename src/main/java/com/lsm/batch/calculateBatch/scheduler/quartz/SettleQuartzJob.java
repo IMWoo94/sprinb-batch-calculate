@@ -1,5 +1,6 @@
 package com.lsm.batch.calculateBatch.scheduler.quartz;
 
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.batch.core.Job;
@@ -29,9 +30,11 @@ public class SettleQuartzJob extends QuartzJobBean {
 
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+		JobDataMap jobDataMap = context.getMergedJobDataMap();
+		String targetDate = jobDataMap.get("targetDate").toString();
 		JobParameters parameters = new JobParametersBuilder()
-			.addString("targetDate", "20240225")
-			.addString("totalCount", "500000")
+			.addString("targetDate", targetDate)
+			.addString("totalCount", "1000")
 			.toJobParameters();
 
 		try {
