@@ -1,5 +1,8 @@
 package com.lsm.batch.calculateBatch.scheduler.quartz;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -23,6 +26,8 @@ public class SettleQuartzJob extends QuartzJobBean {
 	private final JobLauncher jobLauncher;
 	private final Job settleJob;
 
+	private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
 	public SettleQuartzJob(JobLauncher jobLauncher, Job settleJob) {
 		this.jobLauncher = jobLauncher;
 		this.settleJob = settleJob;
@@ -31,7 +36,9 @@ public class SettleQuartzJob extends QuartzJobBean {
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 		JobDataMap jobDataMap = context.getMergedJobDataMap();
-		String targetDate = jobDataMap.get("targetDate").toString();
+		LocalDate date = LocalDate.parse(jobDataMap.get("targetDate").toString(), dateTimeFormatter);
+		LocalDate localDate = date.minusDays(1);
+		String targetDate = localDate.format(dateTimeFormatter);
 		JobParameters parameters = new JobParametersBuilder()
 			.addString("targetDate", targetDate)
 			.addString("totalCount", "1000")

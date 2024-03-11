@@ -26,7 +26,7 @@ public class SettleQuartzRunner extends QuartzJobRunner {
 	protected void doRun(ApplicationArguments args) {
 		log.info("SettleQuartzRunner doRun");
 		Map<String, String> params = new HashMap<>();
-		params.put("targetDate", "20240225");
+		params.put("targetDate", "20240305");
 		params.put("totalCount", "500000");
 
 		JobDataMap jobDataMap = new JobDataMap();
